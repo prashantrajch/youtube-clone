@@ -4,4 +4,6 @@
 
 *{
     transition: background 1s;
+    @apply transition-transform duration-200
 }
+
