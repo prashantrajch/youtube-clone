@@ -12,7 +12,7 @@ export default function App() {
       <Routes>
         <Route exact path="/"  element={<Home /> } />
         <Route path="/result/:search_query"  element={<SearchResult /> } />
-        <Route path="/"  element={<VideoDetail /> } />
+        <Route path="/video/:id"  element={<VideoDetail /> } />
       </Routes>
     </div>
   );

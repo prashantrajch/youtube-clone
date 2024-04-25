@@ -6,7 +6,7 @@ import YoutubeContext from "../../context/ContextCreate";
 
 export default function Header() {
   const [searchValue, setSearchValue] = useState("");
-  const {setMobileNav,mobileNav,setTheme,theme,handleMobileNav} = useContext(YoutubeContext);
+  const {setTheme,theme,handleMobileNav} = useContext(YoutubeContext);
 
   const navigate = useNavigate()
 
@@ -34,7 +34,7 @@ export default function Header() {
 
 
   return (
-    <div className="h-14 flex items-center justify-between px-4 md:px-5 dark:bg-[#303030]">
+    <div className="h-14 flex items-center justify-between px-2 md:px-4 lg:px-5 dark:bg-[#303030]">
       <div className="left-side flex items-center md:gap-4 gap-2">
         <div className="menu-icon">
           <RoundIcon IconElement={FiMenu} bgShow={false} darkMode={theme} action={handleMobileNav} />
@@ -63,8 +63,8 @@ export default function Header() {
         </Link>
       </div>
       <form onSubmit={handleSubmit}>
-        <div className="flex items-center gap-4">
-          <div className="flex group items-center max-[400px]:w-[90%] max-[400px]:mx-auto ">
+        <div className="flex items-center gap-4 max-sm:w-[85%] max-sm:mx-auto">
+          <div className="flex group items-center ">
             <div className="flex h-8 md:h-10 md:ml-10 md:pl-5 border rounded-l-3xl group-focus-within:border-blue-500 md:group-focus-within:ml-5 md:group-focus-within:pl-0 dark:border-white/50 overflow-hidden">
               <div className="w-12 items-center justify-center hidden group-focus-within:md:flex dark:text-white">
                 <IoIosSearch size={22} />

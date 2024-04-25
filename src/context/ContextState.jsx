@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import YoutubeContext from "./ContextCreate";
 
 export default function YoutubeState({ children }) {
-  const [mobileNav, setMobileNav] = useState(true);
+  const [mobileNav, setMobileNav] = useState(false);
+  const[sidebar,setSidebar] = useState(false)
   const [theme, setTheme] = useState(getLocalStorage());
   const [selectedCategories, setSelectedCategories] = useState("New");
 
@@ -26,19 +27,17 @@ export default function YoutubeState({ children }) {
 
   function handleMobileNav() {
     setMobileNav(!mobileNav);
+    setSidebar(!sidebar)
   }
 
   function handleNavItem(name, type) {
-    console.log('im cliced')
+    setMobileNav(!mobileNav)
     if(type == 'menu'){
       return
     }
     setSelectedCategories(name)
   }
 
-  useEffect(() =>{
-    console.log('hello')
-  }, [selectedCategories])
 
 
 
@@ -52,7 +51,8 @@ export default function YoutubeState({ children }) {
         handleMobileNav,
         selectedCategories,
         setSelectedCategories,
-        handleNavItem
+        handleNavItem,
+        sidebar
       }}
     >
       {children}
