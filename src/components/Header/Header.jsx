@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import RoundIcon from "./RoundIcon";
-import {FiMenu,RiVideoAddLine,SlBell,IoIosSearch,WiDaySunny,MdOutlineDarkMode,MdMic,yt_black_logo,yt_mobile_logo,yt_white_logo,Profile_Image,} from "./IconsData";
+import {FiMenu,RiVideoAddLine,SlBell,IoIosSearch,WiDaySunny,MdOutlineDarkMode,MdMic,yt_black_logo,yt_mobile_logo,yt_white_logo,Profile_Image} from "./IconsData";
 import YoutubeContext from "../../context/ContextCreate";
 
 export default function Header() {
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState();
   const {setTheme,theme,handleMobileNav} = useContext(YoutubeContext);
 
   const navigate = useNavigate()
@@ -15,15 +15,18 @@ export default function Header() {
   }
 
 
-  //By default behaviour checking
-  // useEffect(()=> {
-  //   if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-  //     setTheme('dark');
-  //   }
-  //   else{
-  //     setTheme('light');
-  //   }
-  // },[])
+  //By default checking theme or your computer
+  useEffect(()=> {
+    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+      setTheme('dark');
+    }
+    else if(theme == 'dark'){
+      setTheme('dark')
+    }
+    else{
+      setTheme('light');
+    }
+  },[])
 
   function handleSubmit(e) {
     e.preventDefault();
