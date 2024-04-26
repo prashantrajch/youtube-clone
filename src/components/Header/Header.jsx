@@ -20,6 +20,9 @@ export default function Header() {
     if(window.matchMedia('(prefers-color-scheme: dark)').matches){
       setTheme('dark');
     }
+    else if(window.matchMedia('(prefers-color-scheme: light)').matches){
+      setTheme('light')
+    }
     else if(theme == 'dark'){
       setTheme('dark')
     }
