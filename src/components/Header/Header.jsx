@@ -6,7 +6,7 @@ import YoutubeContext from "../../context/ContextCreate";
 
 export default function Header() {
   const [searchValue, setSearchValue] = useState();
-  const {setTheme,theme,handleMobileNav} = useContext(YoutubeContext);
+  const {setTheme,theme,handleMobileNav,setSelectedCategories} = useContext(YoutubeContext);
 
   const navigate = useNavigate()
 
@@ -14,33 +14,17 @@ export default function Header() {
     setTheme(theme == "dark" ? "light" : "dark");
   }
 
-
-  //By default checking theme or your computer
-  useEffect(()=> {
-    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-      setTheme('dark');
-    }
-    else if(window.matchMedia('(prefers-color-scheme: light)').matches){
-      setTheme('light')
-    }
-    else if(theme == 'dark'){
-      setTheme('dark')
-    }
-    else{
-      setTheme('light');
-    }
-  },[])
-
   function handleSubmit(e) {
     e.preventDefault();
     if (searchValue !== "") {
       navigate(`/result/${searchValue}`)
+      setSelectedCategories('')
     }
   }
 
 
   return (
-    <div className="h-14 flex items-center justify-between px-2 md:px-4 lg:px-5 dark:bg-[#303030]">
+    <div className="h-14 flex items-center justify-between px-2 md:px-4 lg:px-5 bg-white dark:bg-[#303030] sticky top-0 z-10">
       <div className="left-side flex items-center md:gap-4 gap-2">
         <div className="menu-icon">
           <RoundIcon IconElement={FiMenu} bgShow={false} darkMode={theme} action={handleMobileNav} />
@@ -68,8 +52,8 @@ export default function Header() {
           </div>
         </Link>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="flex items-center gap-4 max-sm:w-[85%] max-sm:mx-auto">
+      <form onSubmit={handleSubmit} className="max-sm:w-[44%]">
+        <div className="flex items-center gap-4">
           <div className="flex group items-center ">
             <div className="flex h-8 md:h-10 md:ml-10 md:pl-5 border rounded-l-3xl group-focus-within:border-blue-500 md:group-focus-within:ml-5 md:group-focus-within:pl-0 dark:border-white/50 overflow-hidden">
               <div className="w-12 items-center justify-center hidden group-focus-within:md:flex dark:text-white">
@@ -84,7 +68,7 @@ export default function Header() {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </div>
-            <button className="w-[40px] md:w-[60px] h-8 md:h-10 flex items-center justify-center border border-l-0 rounded-r-3xl bg-slate-100 hover:bg-slate-200 dark:border-white/50 dark:bg-white/[0.1]">
+            <button className="min-w-[40px] md:w-[60px] h-8 md:h-10 flex items-center justify-center border border-l-0 rounded-r-3xl bg-slate-100 hover:bg-slate-200 dark:border-white/50 dark:bg-white/[0.1]">
               <IoIosSearch size={22} className="dark:text-white" />
             </button>
           </div>

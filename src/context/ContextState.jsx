@@ -1,30 +1,67 @@
 import React, { useState, useEffect } from "react";
 import YoutubeContext from "./ContextCreate";
+import { fetchDataFromApi } from "../data";
+import { useNavigate } from "react-router-dom";
+
+function getLocalStorage() {
+  let localTheme = localStorage.getItem("theme");
+  if (localTheme) {
+    return JSON.parse(localStorage.getItem("theme"));
+  } else {
+    return "light";
+  }
+}
 
 export default function YoutubeState({ children }) {
   const [mobileNav, setMobileNav] = useState(false);
   const [sidebar, setSidebar] = useState(false);
   const [theme, setTheme] = useState(getLocalStorage());
   const [selectedCategories, setSelectedCategories] = useState("New");
-  const [apiData, setApiData] = useState({
-    thumbnail:
-      "https://images.unsplash.com/photo-1559705421-4ae9bf6fabb5?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    title: "Mi Amor (Lyrics) - Sharn, 40k & The Paul",
-    avatar: "https://picsum.photos/400/400?random=1",
-    published: "1 Hour",
-    author_title: "BBC News Hindi",
-    views: 567000,
-  });
+  const [apiData, setApiData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
-  function getLocalStorage() {
-    let localTheme = localStorage.getItem("theme");
-    if (localTheme) {
-      return JSON.parse(localStorage.getItem("theme"));
-    } else {
-      return "light";
-    }
+  //using for handle mobile and large nav
+  function handleMobileNav() {
+    setMobileNav(!mobileNav);
+    setSidebar(!sidebar);
   }
 
+  // using for handle nav item or selectedCategories
+  function handleNavItem(name, type) {
+    setMobileNav(!mobileNav);
+    if (type == "menu") {
+      return;
+    }
+    setSelectedCategories(name);
+    navigate('/')
+    document.querySelector('title').innerText = 'YouTube'
+
+  }
+
+  async function fetchCategoriesData(){
+    setLoading(true)
+    const result = await fetchDataFromApi(`search/?q=${selectedCategories}`);
+    localStorage.setItem('apiData',JSON.stringify(result));
+    setApiData(result.contents)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    // fetchCategoriesData()
+  },[selectedCategories])
+
+
+  //By default checking theme or your computer
+  useEffect(() => {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, []);
+
+  // using for dark and light mode
   useEffect(() => {
     if (theme == "dark") {
       document.documentElement.classList.add("dark");
@@ -34,18 +71,7 @@ export default function YoutubeState({ children }) {
     localStorage.setItem("theme", JSON.stringify(theme));
   }, [theme]);
 
-  function handleMobileNav() {
-    setMobileNav(!mobileNav);
-    setSidebar(!sidebar);
-  }
 
-  function handleNavItem(name, type) {
-    setMobileNav(!mobileNav);
-    if (type == "menu") {
-      return;
-    }
-    setSelectedCategories(name);
-  }
 
   return (
     <YoutubeContext.Provider
@@ -60,6 +86,8 @@ export default function YoutubeState({ children }) {
         handleNavItem,
         sidebar,
         apiData,
+        loading,
+        setLoading
       }}
     >
       {children}

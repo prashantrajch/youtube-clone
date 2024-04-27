@@ -6,12 +6,12 @@ import MobileNavbar from "./MobileNavbar";
 import SideNavbar from "./SideNavbar";
 
 export default function Navbar() {
-  const { mobileNav, selectedCategories, handleNavItem,sidebar } =
+  const { selectedCategories, handleNavItem,sidebar } =
     useContext(YoutubeContext);
 
   return (
-    <div className="py-4">
-      <div className="md:px-4 overflow-hidden h-[85vh] hover:overflow-y-auto">
+    <div className="py-4 md:px-4">
+      <div className="overflow-hidden h-[calc(100%-56px)] hover:overflow-y-auto md:fixed z-10">
         <div className="hidden xl:block ">
           {categories.map((item) => {
             return sidebar  ? (
