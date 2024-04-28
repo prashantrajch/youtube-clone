@@ -4,7 +4,7 @@ import Feed from "../../components/Feed/Feed";
 import YoutubeContext from "../../context/ContextCreate";
 
 export default function Home() {
-  const { sidebar, loading } = useContext(YoutubeContext);
+  const { sidebar, loading, error } = useContext(YoutubeContext);
   useEffect(() => {
     document.querySelector("title").innerText = "YouTube";
   }, []);
@@ -18,7 +18,7 @@ export default function Home() {
       >
         <Navbar />
       </div>
-      {!loading && <Feed />}
+      {error ? <h3 className="flex items-center justify-center font-bold text-2xl px-12 text-center">{error}</h3> : !loading && <Feed />}
     </div>
   );
 }

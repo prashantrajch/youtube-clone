@@ -26,9 +26,13 @@ export const fetchDataFromApi = async (query) => {
   };
   try {
     const response = await fetch(url, options);
+    // if(response.status == 429) throw "You have exceeded the MONTHLY quota for Requests on your current plan, BASIC. Upgrade your plan at https://rapidapi.com/Glavier/api/youtube138";
+    if(response.status == 429) throw "Sorry, I have exceeded my MONTHLY quota for Requests on my current plan, BASIC.   BY Rapid API";
     const result = await response.json();
+    // console.log(result);
     return result;
   } catch (error) {
-    console.error(error);
+    // console.error(error);
+    throw error
   }
 };

@@ -19,6 +19,7 @@ export default function YoutubeState({ children }) {
   const [selectedCategories, setSelectedCategories] = useState("New");
   const [apiData, setApiData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const[error,setError]= useState(null);
   const navigate = useNavigate()
 
   //using for handle mobile and large nav
@@ -45,10 +46,17 @@ export default function YoutubeState({ children }) {
 
   async function fetchCategoriesData(){
     setLoading(true)
-    const result = await fetchDataFromApi(`search/?q=${selectedCategories}`);
-    localStorage.setItem('apiData',JSON.stringify(result));
-    setApiData(result.contents)
-    setLoading(false)
+    try{
+      const result = await fetchDataFromApi(`search/?q=${selectedCategories}`);
+      setApiData(result.contents)
+      setLoading(false)
+    }
+    catch(err){
+      // console.log(err);
+      setLoading(false)
+      setError(err)
+    }
+    // localStorage.setItem('apiData',JSON.stringify(result));
   }
 
   useEffect(() => {
@@ -92,7 +100,9 @@ export default function YoutubeState({ children }) {
         apiData,
         loading,
         setLoading,
-        handelSidenav
+        handelSidenav,
+        error,
+        setError
       }}
     >
       {children}
