@@ -1,14 +1,33 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import RoundIcon from "./RoundIcon";
-import {FiMenu,RiVideoAddLine,SlBell,IoIosSearch,WiDaySunny,MdOutlineDarkMode,MdMic,yt_black_logo,yt_mobile_logo,yt_white_logo,Profile_Image} from "./IconsData";
+import {
+  FiMenu,
+  RiVideoAddLine,
+  SlBell,
+  IoIosSearch,
+  WiDaySunny,
+  MdOutlineDarkMode,
+  MdMic,
+  yt_black_logo,
+  yt_mobile_logo,
+  yt_white_logo,
+  Profile_Image,
+} from "./IconsData";
 import YoutubeContext from "../../context/ContextCreate";
+import SideNavbar from "../Navbar/SideNavbar";
 
 export default function Header() {
-  const [searchValue, setSearchValue] = useState();
-  const {setTheme,theme,handleMobileNav,setSelectedCategories} = useContext(YoutubeContext);
+  const [searchValue, setSearchValue] = useState("");
+  const {
+    setTheme,
+    theme,
+    handleMobileNav,
+    setSelectedCategories,
+    handelSidenav,
+  } = useContext(YoutubeContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleDarkMode() {
     setTheme(theme == "dark" ? "light" : "dark");
@@ -17,17 +36,43 @@ export default function Header() {
   function handleSubmit(e) {
     e.preventDefault();
     if (searchValue !== "") {
-      navigate(`/result/${searchValue}`)
-      setSelectedCategories('')
+      navigate(`/result/${searchValue}`);
+      setSelectedCategories("");
     }
   }
 
+  const { pathname } = useLocation();
+  const page = pathname.split("/").filter(Boolean)[0];
 
   return (
     <div className="h-14 flex items-center justify-between px-2 md:px-4 lg:px-5 bg-white dark:bg-[#303030] sticky top-0 z-10">
       <div className="left-side flex items-center md:gap-4 gap-2">
         <div className="menu-icon">
-          <RoundIcon IconElement={FiMenu} bgShow={false} darkMode={theme} action={handleMobileNav} />
+          <div className="hidden xl:block">
+            {page == "video" ? (
+              <RoundIcon
+                IconElement={FiMenu}
+                bgShow={false}
+                darkMode={theme}
+                action={handleMobileNav}
+              />
+            ) : (
+              <RoundIcon
+                IconElement={FiMenu}
+                bgShow={false}
+                darkMode={theme}
+                action={handelSidenav}
+              />
+            )}
+          </div>
+          <div className="block xl:hidden">
+            <RoundIcon
+              IconElement={FiMenu}
+              bgShow={false}
+              darkMode={theme}
+              action={handleMobileNav}
+            />
+          </div>
         </div>
         <Link to={"/"}>
           <div className="logo flex items-center">

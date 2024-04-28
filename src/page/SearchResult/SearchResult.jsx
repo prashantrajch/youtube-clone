@@ -6,7 +6,7 @@ import SearchVideoCard from "../../components/Video Card/SearchVideoCard";
 import { fetchDataFromApi } from "../../data";
 
 export default function SearchResult() {
-  const [searchResult,setSearchResult] = useState(JSON.parse(localStorage.getItem('searchData')).contents);
+  const [searchResult,setSearchResult] = useState([]);
   const { search_query } = useParams();
   const { sidebar,setLoading,loading } = useContext(YoutubeContext);
 
@@ -15,19 +15,18 @@ export default function SearchResult() {
     setLoading(true)
     const result = await fetchDataFromApi(`search/?q=${search_query}`);
     setSearchResult(result.contents)
-    localStorage.setItem('searchData',JSON.stringify(result))
     setLoading(false)
   }
 
   
   useEffect(() => {
-    // fetchSearchDataFromApi()
+    fetchSearchDataFromApi()
     document.querySelector('title').innerText = `(${searchResult.length}) ${search_query} - YouTube`
   },[search_query])
 
 
   return (
-    <div className="flex min-h-[calc(100%-56px)]">
+    <div className="flex min-h-[calc(100vh-56px)]">
       <div
         className={`sm:min-w-[76px] ${
           sidebar ? "xl:w-[76px]" : "xl:w-[210px]"
@@ -41,8 +40,8 @@ export default function SearchResult() {
         } `}
       > 
         {
-         !loading &&  searchResult.map((item) => {
-            if(item.type !== 'video') return false;
+         !loading &&  searchResult?.map((item) => {
+            if(item?.type !== 'video') return false;
             return(
               <SearchVideoCard key={item.video.videoId} video={item.video}/>
             )

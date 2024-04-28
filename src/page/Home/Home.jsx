@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className="flex min-h-[calc(100vh-56px)]">
       <div
-        className={`sm:min-w-[76px] ${
+        className={`md:min-w-[76px] ${
           sidebar ? "xl:w-[76px]" : "xl:w-[210px]"
         }`}
       >

@@ -10,30 +10,33 @@ import SuggestionnVideoCard from "../../components/Video Card/SuggestionnVideoCa
 import { MdMusicNote } from "react-icons/md";
 
 export default function VideoDetail() {
-  const [videoData, setVideoData] = useState();
-  const [suggestionVideoData, setSuggestionVideoData] = useState();
+  const [videoData, setVideoData] = useState([]);
+  const [suggestionVideoData, setSuggestionVideoData] = useState([]);
   const { id } = useParams();
-  const { setLoading, loading } = useContext(YoutubeContext);
+  const { setLoading, loading,setMobileNav } = useContext(YoutubeContext);
 
   useEffect(() => {
-    // fetchVideoDetailsApi();
-    // fetchSuggestionVideoApi();
+    fetchVideoDetailsApi();
+    fetchSuggestionVideoApi();
     document.querySelector("title").innerText = `YouTube`;
   }, [id]);
+
+  useEffect(() => {
+    setMobileNav(false)
+  },[])
 
   async function fetchVideoDetailsApi() {
     setLoading(true);
     const result = await fetchDataFromApi(`video/details/?id=${id}`);
-    localStorage.setItem("videoDetails", JSON.stringify(result));
-    console.log(result, "im first");
+    setVideoData(result);
     setLoading(false);
   }
+
 
   async function fetchSuggestionVideoApi() {
     setLoading(true);
     const result = await fetchDataFromApi(`video/related-contents/?id=${id}`);
-    localStorage.setItem("suggestionDetails", JSON.stringify(result));
-    console.log(result);
+    setSuggestionVideoData(result);
     setLoading(false);
   }
   return (
@@ -43,7 +46,7 @@ export default function VideoDetail() {
         <div className="flex justify-center flex-row">
           <div className="w-full max-w-[1280px] flex flex-col lg:flex-row">
             <div className="video-section flex flex-col lg:w-[calc(100%-350px)] xl:w-[calc(100%-500px)] px-4 py-3 lg:py-4 overflow-y-auto ">
-              <div className="h-[200px] sm:h-[300px] md:h-[400px] rounded-2xl overflow-hidden">
+              <div className="h-[200px] sm:h-[300px] md:h-[450px] rounded-2xl overflow-hidden">
                 <YouTubePlayer
                   url={`https://www.youtube.com/watch?v=${id}`}
                   controls
@@ -61,17 +64,17 @@ export default function VideoDetail() {
                   <div className="flex gap-2 items-center ">
                     <div className="flex items-center w-11 h-11 rounded-full overflow-hidden">
                       <img
-                        src={videoData?.author.avatar[0].url}
+                        src={videoData?.author?.avatar[0]?.url}
                         alt="profile image"
                         className="w-full h-full"
                       />
                     </div>
                     <div className="flex flex-col">
                       <div className="dark:text-white text-md font-semibold flex items-center">
-                        {videoData?.author.title}
-                        {videoData?.author.badges[0].type ==
+                        {videoData?.author?.title}
+                        {videoData?.author?.badges[0]?.type ==
                           "VERIFIED_CAHNNEL" && (
-                          <BsFillCheckCircleFill className="text-sm ml-1 text-[#606060] dark:text-white" />
+                          <BsFillCheckCircleFill title="Verified Channel" className="text-sm ml-1 text-[#606060] dark:text-white" />
                         )}
                         {videoData?.author?.badges[0]?.type ===
                           "OFFICIAL_ARTIST_CHANNEL" && (
@@ -103,7 +106,7 @@ export default function VideoDetail() {
             <div className="flex flex-col py-4 px-4 overflow-y-auto lg:w-[350px] xl:w-[400px]">
               {suggestionVideoData?.contents?.map((item, index) => {
                 if (item?.type !== "video") return false;
-                return <SuggestionnVideoCard key={index} video={item.video} />;
+                return <SuggestionnVideoCard key={index} video={item?.video} />;
               })}
             </div>
           </div>

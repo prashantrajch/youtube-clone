@@ -18,7 +18,7 @@ export default function SearchVideoCard({ video }) {
         <div className="flex flex-col sm:ml-3 max-sm:mt-2">
           <span className="text-lg md:text-xl font-[400] line-clamp-2 ">{video?.title}</span>
           <div className="flex text-sm text-[#606060] dark:text-white ">
-            <span>{value_converter(video?.stats.views)} views</span>
+            <span>{value_converter(video?.stats?.views)} views</span>
             <span className="mx-1">&#8226;</span>
             <span>{video?.publishedTimeText}</span>
           </div>

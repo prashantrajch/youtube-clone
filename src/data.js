@@ -6,9 +6,11 @@ export const value_converter = (value) => {
     return Math.floor(value / 1000000) + "M";
   } else if (value >= 1000) {
     return Math.floor(value / 1000) + "K";
-  } else if (value == undefined) {
-    return 500;
-  } else {
+  } 
+  // else if (value == undefined) {
+  //   return 500;
+  // } 
+  else {
     return value;
   }
 };
@@ -25,7 +27,6 @@ export const fetchDataFromApi = async (query) => {
   try {
     const response = await fetch(url, options);
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error) {
     console.error(error);

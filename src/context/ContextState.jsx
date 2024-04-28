@@ -24,7 +24,11 @@ export default function YoutubeState({ children }) {
   //using for handle mobile and large nav
   function handleMobileNav() {
     setMobileNav(!mobileNav);
+  }
+  
+  function handelSidenav(){
     setSidebar(!sidebar);
+    setMobileNav(false);
   }
 
   // using for handle nav item or selectedCategories
@@ -48,7 +52,7 @@ export default function YoutubeState({ children }) {
   }
 
   useEffect(() => {
-    // fetchCategoriesData()
+    fetchCategoriesData()
   },[selectedCategories])
 
 
@@ -87,7 +91,8 @@ export default function YoutubeState({ children }) {
         sidebar,
         apiData,
         loading,
-        setLoading
+        setLoading,
+        handelSidenav
       }}
     >
       {children}
